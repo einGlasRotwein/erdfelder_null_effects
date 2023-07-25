@@ -17,7 +17,7 @@ The supplementary material can be directly rendered from the [Quarto](https://qu
 
 If you prefer a more lightweight version without having to render a Quarto document, an R script containting the same code (`erdfelder_supplement.R`) is also available.
 
-You can find any other files belonging to the project at its [OSF repository]().
+You can find any other files belonging to the project at its [OSF repository](https://osf.io/wuq2h/).
 
 ## metamix
 
