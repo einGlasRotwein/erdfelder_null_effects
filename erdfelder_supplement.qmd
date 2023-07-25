@@ -86,26 +86,12 @@ data$df[data$Number.of.groups > 1] <-
   data$Placebo.group.n[data$Number.of.groups > 1] +
   data$Treatment.group.n[data$Number.of.groups > 1] - 2
 
-# Calculate t
-# t(df) = Hedges g * (1 / SQRT(1/n1 + 1/n2) )
-
-# For two groups or more
-data$t[data$Number.of.groups > 1] <- 
-  h_to_t(
-    data$Effect.size.smd[data$Number.of.groups > 1], 
-    data$Placebo.group.n[data$Number.of.groups > 1], 
-    data$Treatment.group.n[data$Number.of.groups > 1]
-  )
-
 # Calculate corrected t values
-# by dividing Hedge's g by J
-# J = 1 - 3 / (4v-1)
-# v = n1 + n2 - 2
-data$corrt <- 
+data$corrt[data$Number.of.groups > 1] <- 
   h_to_t(
-    data$Effect.size.smd,
-    data$Placebo.group.n,
-    data$Treatment.group.n,
+    data$Effect.size.smd[data$Number.of.groups > 1],
+    data$Placebo.group.n[data$Number.of.groups > 1],
+    data$Treatment.group.n[data$Number.of.groups > 1],
     correct = TRUE
   )
 ```
