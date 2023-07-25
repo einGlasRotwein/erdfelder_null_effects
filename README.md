@@ -5,10 +5,10 @@ This repository contains the `R` code behind the analyses and the supplementary 
 
 ## Authors
 
-Edgar Erdfelder - [orcid](https://orcid.org/0000-0003-1032-3981)
-Juliane Nagel - [orcid](https://orcid.org/0000-0002-5310-8088)
-Daniel W. Heck - [orcid](https://orcid.org/0000-0002-6302-9252)
-Nils Petras - [orcid](https://orcid.org/0000-0001-9528-2298)
+- Edgar Erdfelder - [orcid](https://orcid.org/0000-0003-1032-3981)
+- Juliane Nagel - [orcid](https://orcid.org/0000-0002-5310-8088)
+- Daniel W. Heck - [orcid](https://orcid.org/0000-0002-6302-9252)
+- Nils Petras - [orcid](https://orcid.org/0000-0001-9528-2298)
 
 ## Files
 
