@@ -7,9 +7,11 @@ execute:
 ---
 
 ```{r setup_chunk}
-library(openxlsx)
-library(ggplot2)
-library(metamix)
+# R version: 4.3.1 (2023-06-16 ucrt)
+
+library(openxlsx) # 4.2.5.2
+library(ggplot2) # 3.4.2
+library(metamix) # 0.1.0
 ```
 
 ```{r plot_settings}
