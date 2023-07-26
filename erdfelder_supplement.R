@@ -83,35 +83,30 @@ data <- merge.data.frame(
 
 ## CALCULATE T-VALUES ----------------------------------------------------------
 
-# Isolate studies where the outcome is the standardized mean difference
-data$Effect.size.smd <- 
-  ifelse(data$Measurement == "SMD", data$Effect.size, NA)
+# Only consider studies with two groups or more and measure = SMD
+main <- data[data$Number.of.groups > 1 & data$Measurement == "SMD", ]
 
-# Calculate df for studies with two groups or more
-data$df[data$Number.of.groups > 1] <- 
-  data$Placebo.group.n[data$Number.of.groups > 1] +
-  data$Treatment.group.n[data$Number.of.groups > 1] - 2
+# Calculate df
+main$df <- main$Placebo.group.n + main$Treatment.group.n - 2
 
-# Calculate corrected t values for studies with two groups or more
-data$corrt[data$Number.of.groups > 1] <- 
+# Calculate corrected t values
+main$corrt <- 
   h_to_t(
-    data$Effect.size.smd[data$Number.of.groups > 1],
-    data$Placebo.group.n[data$Number.of.groups > 1],
-    data$Treatment.group.n[data$Number.of.groups > 1],
+    main$Effect.size,
+    main$Placebo.group.n,
+    main$Treatment.group.n,
     correct = TRUE
   )
 
 ## FIG 1 - HEDGES' G DISTRIBUTION ----------------------------------------------
 
-main <- data[data$Measurement == "SMD" & data$Number.of.groups > 1, ]
-
-mean_effect_subset <- mean(main$Effect.size.smd)
+mean_effect_subset <- mean(main$Effect.size)
 
 ci_effect_subset <- 
   c(
-    mean(main$Effect.size.smd) - qnorm(.975) * sd(main$Effect.size.smd) / 
+    mean(main$Effect.size) - qnorm(.975) * sd(main$Effect.size) / 
       sqrt(nrow(main)),
-    mean(main$Effect.size.smd) + qnorm(.975) * sd(main$Effect.size.smd) / 
+    mean(main$Effect.size) + qnorm(.975) * sd(main$Effect.size) / 
       sqrt(nrow(main))
   )
 
@@ -122,7 +117,7 @@ ci_effect_subset <-
 # interval.
 ggplot(
   data[data$Measurement == "SMD" & data$Number.of.groups > 1, ],
-  aes(x = Effect.size.smd)
+  aes(x = Effect.size)
 ) +
   annotate(
     "rect",
@@ -155,7 +150,7 @@ ggplot(
 cat("number of selected studies (k) in the main analysis:")
 nrow(main)
 cat("mean effect size of the k selected studies:")
-mean(main$Effect.size.smd)
+mean(main$Effect.size)
 cat("with a confidence interval of")
 ci_effect_subset
 

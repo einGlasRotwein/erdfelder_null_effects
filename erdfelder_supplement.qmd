@@ -76,24 +76,21 @@ data <- merge.data.frame(
   homeopathy_sheet,
   group_ns,
   by = "Index")
-
-# isolate standardized mean differences
-data$Effect.size.smd <- 
-  ifelse(data$Measurement == "SMD", data$Effect.size, NA)
 ```
 
 ```{r calculate_stats}
-# Calculate df for two groups or more
-data$df[data$Number.of.groups > 1] <- 
-  data$Placebo.group.n[data$Number.of.groups > 1] +
-  data$Treatment.group.n[data$Number.of.groups > 1] - 2
+# Only consider studies with two groups or more and measure = SMD
+main <- data[data$Number.of.groups > 1 & data$Measurement == "SMD", ]
+
+# Calculate df
+main$df <- main$Placebo.group.n + main$Treatment.group.n - 2
 
 # Calculate corrected t values
-data$corrt[data$Number.of.groups > 1] <- 
+main$corrt <- 
   h_to_t(
-    data$Effect.size.smd[data$Number.of.groups > 1],
-    data$Placebo.group.n[data$Number.of.groups > 1],
-    data$Treatment.group.n[data$Number.of.groups > 1],
+    main$Effect.size,
+    main$Placebo.group.n,
+    main$Treatment.group.n,
     correct = TRUE
   )
 ```
@@ -101,19 +98,24 @@ data$corrt[data$Number.of.groups > 1] <-
 # Descriptive figures
 
 ```{r}
-main <- data[data$Measurement == "SMD" & data$Number.of.groups > 1, ]
-mean_effect_subset <- mean(main$Effect.size.smd)
-ci_effect_subset <- c(mean(main$Effect.size.smd) - qnorm(.975) * sd(main$Effect.size.smd) / sqrt(nrow(main)),
-  mean(main$Effect.size.smd) + qnorm(.975) * sd(main$Effect.size.smd) / sqrt(nrow(main)))
+mean_effect_subset <- mean(main$Effect.size)
+
+ci_effect_subset <- 
+  c(
+    mean(main$Effect.size) - qnorm(.975) * sd(main$Effect.size) / 
+      sqrt(nrow(main)),
+    mean(main$Effect.size) + qnorm(.975) * sd(main$Effect.size) / 
+      sqrt(nrow(main))
+  )
 ```
 
 
 ```{r fig1}
 #| label: fig-1
-#| fig-cap: !expr 'paste0("Distribution of Hedges’ *g* (*M* = ", round(mean(data$Effect.size.smd[data$Number.of.groups > 1], na.rm = TRUE), 2), ", *SD* = ", round(sd(data$Effect.size.smd[data$Number.of.groups > 1], na.rm = TRUE), 2), ") effect sizes in the *k* = ", nrow(data[data$Measurement == "SMD" & data$Number.of.groups > 1, ]), " studies taken from Sigurdson’s homeopathy data set that consist of more than one group. Hedges’ *g* was calculated as homeopathy-placebo mean difference divided by the pooled baseline standard deviation weighted by sample sizes and multiplied by the correction factor *J* = 1 − 3/(4 · (*n*<sub>1</sub> + *n*<sub>2</sub>) − 9). The dashed line and the colored area indicate the mean and its 95% confidence interval.")'
+#| fig-cap: !expr 'paste0("Distribution of Hedges’ *g* (*M* = ", round(mean(main$Effect.size, na.rm = TRUE), 2), ", *SD* = ", round(sd(main$Effect.size, na.rm = TRUE), 2), ") effect sizes in the *k* = ", nrow(main), " studies taken from Sigurdson’s homeopathy data set that consist of more than one group. Hedges’ *g* was calculated as homeopathy-placebo mean difference divided by the pooled baseline standard deviation weighted by sample sizes and multiplied by the correction factor *J* = 1 − 3/(4 · (*n*<sub>1</sub> + *n*<sub>2</sub>) − 9). The dashed line and the colored area indicate the mean and its 95% confidence interval.")'
 ggplot(
   data[data$Measurement == "SMD" & data$Number.of.groups > 1, ],
-  aes(x = Effect.size.smd)
+  aes(x = Effect.size)
 ) +
   annotate(
     "rect",
@@ -148,7 +150,7 @@ ggplot(
 cat("number of selected studies (k) in the main analysis:")
 nrow(main)
 cat("mean effect size of the k selected studies:")
-mean(main$Effect.size.smd)
+mean(main$Effect.size)
 cat("with a confidence interval of")
 ci_effect_subset
 
