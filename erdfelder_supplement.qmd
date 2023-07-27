@@ -1,6 +1,8 @@
 ---
 title: 'Supplemental Materials Accompanying the Article "Uncovering Null Effects in Null Fields: The Case of Homeopathy"'
-format: html
+format: 
+  html:
+    self-contained: true
 editor: source
 execute: 
   echo: false
