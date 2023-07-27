@@ -1,0 +1,80 @@
+
+Data accompanying the article "Uncovering Null Effects in Null Fields: The Case 
+of Homeopathy".
+
+Two data files are provided:
+
+# 1-s2.0-S0895435623000100-mmc2.xlsx -------------------------------------------
+
+Data file originally provided by Sigurdson et al. (2023)
+See: https://doi.org/10.1016/j.jclinepi.2023.01.010
+Supplementary data can be found here: https://www.sciencedirect.com/science/article/abs/pii/S0895435623000100
+
+Please refer to Sigurdson et al.'s supplementary materials for a documentation 
+of their data.
+For our analyses, we use the data provided by Sigurdson et al., but for 
+convenience, we have created a reduced version of the data that only contains 
+the studies we analysed in our article (see below).
+
+# erdfelder_subset.csv ---------------------------------------------------------
+
+Subset of the data provided by Sigurdson et al. (2023).
+Reduced to all studies that a) analysed at least two groups and b) used 
+standardized mean deviations (SMD) as outcome variable. 
+Additionally, we added a column with t-values corresponding to the Hedges' g 
+values reported by Sigurdson et al.
+
+The reduced data set contains the following variables:
+
+# Index ........................................................................
+Integer. Unique identification number for each study. Originally in the 
+Sigurdson et al. data set.
+
+# PMIDs ........................................................................
+Integer. PubMed ID for each study. Originally in the Sigurdson et al. data set.
+
+# Effect.size ..................................................................
+Double. Effect size for the main comparison of the respective study. In this 
+subset of the data, all effect sizes are reported as SMD (Hedges' g). 
+Originally in the Sigurdson et al. data set.
+
+# Measurement ..................................................................
+Character. Which measure the effect size measure refers to. Is SMD (Hedes' g) 
+for all studies in this subset of the data. Originally in the Sigurdson et al. 
+data set.
+
+# SD ...........................................................................
+Double. Standard deviation of the effect size measurement. Originally in the 
+Sigurdson et al. data set.
+
+# Sample.size ..................................................................
+Integer. Total n for the treatment and control group. Originally in the 
+Sigurdson et al. data set.
+
+# Number.of.groups .............................................................
+Integer. Number of groups in the study. Is > 1 in this subset of the data. 
+Originally in the Sigurdson et al. data set.
+
+# Placebo.group.n ..............................................................
+Integer. Number of participants in the placebo group. Originally in the 
+Sigurdson et al. data set.
+
+# Treatment.group.n ............................................................
+Integer. Number of participants in the treatment group. Originally in the 
+Sigurdson et al. data set.
+
+# df ...........................................................................
+Integer. Degrees of freedom, calculated as n placebo group + n treatment group 
+- 2. Calculated in our analyses of this subset of the data.
+
+# corrt ........................................................................
+Double. We converted the (corrected) Hedges' g reported by Sigurdson et al. to 
+t-values. Since Hedges' g values were corrected by the correction factor J, 
+Hedges' g values were first divided by J, where
+
+J = 1 - 3 / (4v-1)
+and
+v = n1 + n2 - 2
+
+Then, t-values were calculated as
+Hedges' g * 1 / sqrt(1 / n1 + 1 / n2)
